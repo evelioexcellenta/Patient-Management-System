@@ -1,10 +1,7 @@
-# Hospital Patient Data Management System
-
+# Evelio Excellenta - Manajemen Data Pasien Rumah Sakit
 import os
 from tabulate import tabulate
 
-
-# Function to clear the terminal window
 def clear_screen():
     os.system("cls" if os.name == "nt" else "clear")
 
@@ -23,7 +20,6 @@ def yes_no_input(message):
             return user_input
         print("Invalid input. Please enter 'yes' or 'no'.")
 
-# Function to create a new patient record
 def create_patient(data):
     patient_id = no_empty_input("Enter Patient ID: ")
     if patient_id in data:
@@ -35,7 +31,7 @@ def create_patient(data):
     diagnosis = no_empty_input("Enter Diagnosis: ")
     room_number = no_empty_input("Enter Room Number: ")
     admission_date = no_empty_input("Enter Admission Date (DD-MM-YYYY): ")
-    status = no_empty_input("Enter Patient Status (Admitted / Discharged): ")
+    status = no_empty_input("Enter Patient Status: ")
 
     confirm = yes_no_input("\nDo you want to save this record? (yes/no): ").lower()
     if confirm == "yes":
@@ -52,14 +48,10 @@ def create_patient(data):
         print("Record not saved.")
     input("\nPress Enter to return to the menu...")
 
-
-# Function to read patient records
 def read_patient(data):
     pid = input("Enter Patient ID (or leave blank to view all): ")
-
-    if pid:  # If a patient ID is entered
+    if pid:
         if pid in data:
-            # Display the patient's details as a table, just like the 'all patients' table
             patient_info = [
                 [
                     pid,
@@ -89,7 +81,7 @@ def read_patient(data):
             )
         else:
             print("Patient not found.")
-    else:  # If no ID is entered, show all patients
+    else:
         if data:
             print("\nAll Patients:")
             table_data = []
@@ -122,12 +114,9 @@ def read_patient(data):
             print("No patient records available.")
     input("\nPress Enter to return to the menu...")
 
-
-# Function to update a patient record
 def update_patient(data):
     pid = input("Enter Patient ID: ")
     if pid in data:
-        # Display current details of the patient
         print(f"\nCurrent details for Patient ID: {pid}")
         patient_info = [
             [
@@ -156,14 +145,11 @@ def update_patient(data):
             )
         )
 
-        # Ask user for which field to update
         field = input(
             "\nEnter Field to Update (Name, Age, Diagnosis, Room Number, Admission Date, Status): "
         ).capitalize()
         if field in data[pid]:
             new_value = no_empty_input(f"Enter New Value for {field}: ")
-
-            # Display updated details for confirmation
             print("\nNew details for confirmation:")
             patient_info_update = [[field, data[pid][field]], [field, new_value]]
             print(
@@ -187,11 +173,9 @@ def update_patient(data):
     input("\nPress Enter to return to the menu...")
 
 
-# Function to delete a patient record
 def delete_patient(data):
     pid = input("Enter Patient ID to Delete: ")
     if pid in data:
-        # Display patient details before deletion for confirmation
         print(f"\nPatient details for deletion (ID: {pid}):")
         patient_info = [
             [
@@ -219,11 +203,7 @@ def delete_patient(data):
                 tablefmt="grid",
             )
         )
-
-        # Ask for confirmation before deleting
-        confirm = yes_no_input(
-            "\nAre you sure you want to delete this record? (yes/no): "
-        ).lower()
+        confirm = yes_no_input("\nAre you sure you want to delete this record? (yes/no): ").lower()
         if confirm == "yes":
             del data[pid]
             print(f"Patient record {pid} deleted successfully.")
@@ -236,13 +216,11 @@ def delete_patient(data):
 def discharge_patient(data):
     pid = input("Enter Patient ID to Discharge: ")
     if pid in data:
-        # Check if the patient is already discharged
         if data[pid]["Status"].lower() == "discharged":
             print("Patient is already discharged.")
             input("\nPress Enter to return to the menu...")
             return
 
-        # Confirm the discharge operation
         print(f"\nCurrent Patient Details (ID: {pid}):")
         patient_info = [
             ["Name", data[pid]["Name"]],
@@ -256,7 +234,7 @@ def discharge_patient(data):
 
         confirm = yes_no_input("\nAre you sure you want to discharge this patient? (yes/no): ").lower()
         if confirm == "yes":
-            data[pid]["Status"] = "Discharged"  # Update status to Discharged
+            data[pid]["Status"] = "Discharged" 
             print(f"Patient {pid} has been successfully discharged.")
         else:
             print("Discharge operation canceled.")
@@ -264,14 +242,13 @@ def discharge_patient(data):
         print("Patient not found.")
     input("\nPress Enter to return to the menu...")
 
-# Main function to run the application
 def main():
     patient_data = {}
     while True:
         clear_screen()
         print("\nHospital Patient Data Management")
-        print("1. View Patient Record")
-        print("2. Add Patient Record")
+        print("1. Add Patient Record")
+        print("2. View Patient Record")
         print("3. Update Patient Record")
         print("4. Delete Patient Record")
         print("5. Discharge Patient")
@@ -279,9 +256,9 @@ def main():
         choice = input("Enter your choice: ")
         clear_screen()
         if choice == "1":
-            read_patient(patient_data)
-        elif choice == "2":
             create_patient(patient_data)
+        elif choice == "2":
+            read_patient(patient_data)
         elif choice == "3":
             update_patient(patient_data)
         elif choice == "4":
@@ -293,6 +270,6 @@ def main():
             break
         else:
             input("Invalid choice. Press Enter to return to the menu...")
-# Run the main function
+
 if __name__ == "__main__":
     main()
